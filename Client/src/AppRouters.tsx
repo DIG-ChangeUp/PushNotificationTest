@@ -4,20 +4,24 @@ import { UIProvider } from "@yamada-ui/react";
 
 import {IndexPage} from "./components/IndexPage.tsx";
 import {FromPush} from "./components/FromPush.tsx";
-import {useEffect} from "react";
+import {useEffect,useState} from "react";
 import OneSignal from "react-onesignal";
 
 function AppRoutes() {
+	const [oneSignalUserID, setOneSignalUserID] = useState('')
 	useEffect(() => {
 		(async() => {
-			OneSignal.init({
+			await OneSignal.init({
 				appId: 'c890d157-b1e0-4779-8222-465dd83359ff',
 			})
+			const _id = OneSignal.User.PushSubscription.id
+			setOneSignalUserID(_id as string)
 		})()
 	}, [])
 
 	return (
 		<UIProvider>
+			<h1>調べたいこと : {oneSignalUserID}</h1>
 			<Provider>
 				<Routes>
 					<Route path="/" element={<IndexPage />} />
